@@ -1,10 +1,10 @@
-FROM python:3.12
+FROM python:3.11
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src ./src
 
-ENTRYPOINT [ "python", "-m", "src.main" ]
+ENTRYPOINT ["python", "-m", "src.main"]
