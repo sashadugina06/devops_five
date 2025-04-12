@@ -1,10 +1,20 @@
-FROM python:3.1
+# Используем официальный slim-образ с явным указанием версии
+FROM python:3.12-slim-bookworm
 
+# Устанавливаем системные зависимости
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Настраиваем рабочую директорию
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+# Копируем зависимости отдельно для кэширования
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY src ./src
+# Копируем исходный код
+COPY src/ ./src/
 
-ENTRYPOINT [ "python", "-m", "src.main" ]
+# Запускаем приложение
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0"]
