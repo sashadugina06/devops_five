@@ -1,10 +1,9 @@
-FROM python:3.12
+FROM python:3.1
 
-WORKDIR /app
-
-COPY ./requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . .
+WORKDIR /app
+COPY src ./src
 
 ENTRYPOINT [ "python", "-m", "src.main" ]
